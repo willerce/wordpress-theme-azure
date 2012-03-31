@@ -332,19 +332,18 @@ function timeago() {
 show_admin_bar(false);
 
 
-/**
- * 主题后台SNS设置
- * @return null
- */
-function azure_sns_setting() {
-	add_theme_page('Theme Setting', 'Azure Setting', 8, 'sns-setting', 'azure_sns_form');
-}
 
 /**
  * 主题后台的页面回调
  * @return null
  */
 function azure_sns_form() {
+	if(false == get_option('azure_theme_ga'))
+		update_option('azure_theme_ga', '');
+
+	if(false == get_option('azure_theme_feed'))
+		update_option('azure_theme_feed', '');
+
 	if(false == get_option('azure_sns_email'))
 		update_option('azure_sns_email', '');
 
@@ -355,9 +354,15 @@ function azure_sns_form() {
 		update_option('azure_sns_facebook', '');
 
 	if(isset($_POST['Azure'])) {
+		$ga = $_POST['Azure']['ga'];
+		$feed = $_POST['Azure']['feed'];
+
 		$email = $_POST['Azure']['email'];
 		$twitter = $_POST['Azure']['twitter'];
 		$facebook = $_POST['Azure']['facebook'];
+
+		update_option('azure_theme_ga', stripslashes(trim($ga)));
+		update_option('azure_theme_feed', stripslashes(trim($feed)));
 
 		update_option('azure_sns_email', stripslashes(trim($email)));
 		update_option('azure_sns_twitter', stripslashes(trim($twitter)));
@@ -366,8 +371,36 @@ function azure_sns_form() {
 		print '<script type="text/javascript">window.location.href="' . $_SERVER['HTTP_REFERER'] . '";</script>';
 
 	}else {
-		include dirname(__FILE__) . '/settings/sns_setting.php';
+		include dirname(__FILE__) . '/admin-setting.php';
 	}
 }
 
-add_action('admin_menu', 'azure_sns_setting');
+/**
+ * 自定义的Feed地址输入
+ * @return null
+ */
+function azure_feed_links() {
+	print '<link rel="alternate" type="application/rss+xml" title="RSS Feed" href="' . get_option('azure_theme_feed') . '" />';
+}
+
+/**
+ * 主题后台SNS设置
+ * @return null
+ */
+function azure_sns_setting() {
+	add_theme_page('Theme Setting', 'Azure Setting', 8, 'sns-setting', 'azure_sns_form');
+}
+
+/**
+ * 根据主题设置，重写feed地址
+ * @return null
+ */
+function azure_theme_override() {
+	if(false != get_option('azure_theme_feed') || '' != get_option('azure_theme_feed')) {
+		remove_action('wp_head', 'feed_links', 2);
+		add_action('wp_head', 'azure_feed_links', 2);
+	}
+}
+
+add_action('wp_head', 'azure_theme_override', 0);
+add_action('admin_menu', 'azure_sns_setting', 99);

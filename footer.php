@@ -77,7 +77,7 @@
 		<?php endif; ?>
 		<div id="colophon">
 			<div id="site-info">
-				<span>@ 2008 - 2011 WILLERCE.COM, Theme By <a href="http://willerce.com" >willerce.jen</a></span>
+				<span>@ 2008 - <?php print date('Y'); ?> WILLERCE.COM, Theme By <a href="http://willerce.com" >willerce.jen</a></span>
 			</div><!-- #site-info -->
 
 			<div id="site-generator">
@@ -98,7 +98,9 @@
 			<a target="_blank" title="Twitter" href="http://twitter.com/#!/<?php print get_option('azure_sns_twitter'); ?>" class="soc-twitter"><span>visit twitter</span></a>
 		<?php endif; ?>
 
-        <a target="_blank" title="RSS Feed" href="http://willerce.com/feed" class="soc-rss"><span>rss feeds</span></a>
+		<?php if(false != get_option('azure_theme_feed') || '' != get_option('azure_theme_feed')) : ?>
+			<a target="_blank" title="RSS Feed" href="<?php print get_option('azure_theme_feed'); ?>" class="soc-rss"><span>rss feeds</span></a>
+		<?php endif; ?>
 
 		<?php if(false != get_option('azure_sns_email') || '' != get_option('azure_sns_email')) : ?>
 			<a target="_blank" title="Email" href="mailto:<?php print get_option('azure_sns_email'); ?>" class="soc-mail"><span>newsletter</span></a>
@@ -106,9 +108,11 @@
     </div>
 
 </div><!-- #wrapper -->
+
+<?php if(false != get_option('azure_theme_ga') || '' != get_option('azure_theme_ga')) : ?>
 <script type="text/javascript">
   var _gaq = _gaq || [];
-  _gaq.push(['_setAccount', 'UA-26111235-1']);
+	_gaq.push(['_setAccount', '<?php print get_option('azure_theme_ga'); ?>']);
   _gaq.push(['_trackPageview']);
   (function() {
     var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
@@ -116,6 +120,8 @@
     var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
   })();
 </script>
+<?php endif; ?>
+
 <?php
 	/* Always have wp_footer() just before the closing </body>
 	 * tag of your theme, or you will break many plugins, which
