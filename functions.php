@@ -330,3 +330,44 @@ function timeago() {
 }
 
 show_admin_bar(false);
+
+
+/**
+ * 主题后台SNS设置
+ * @return null
+ */
+function azure_sns_setting() {
+	add_theme_page('Theme Setting', 'Azure Setting', 8, 'sns-setting', 'azure_sns_form');
+}
+
+/**
+ * 主题后台的页面回调
+ * @return null
+ */
+function azure_sns_form() {
+	if(false == get_option('azure_sns_email'))
+		update_option('azure_sns_email', '');
+
+	if(false == get_option('azure_sns_twitter'))
+		update_option('azure_sns_twitter', '');
+
+	if(false == get_option('azure_sns_facebook'))
+		update_option('azure_sns_facebook', '');
+
+	if(isset($_POST['Azure'])) {
+		$email = $_POST['Azure']['email'];
+		$twitter = $_POST['Azure']['twitter'];
+		$facebook = $_POST['Azure']['facebook'];
+
+		update_option('azure_sns_email', stripslashes(trim($email)));
+		update_option('azure_sns_twitter', stripslashes(trim($twitter)));
+		update_option('azure_sns_facebook', stripslashes(trim($facebook)));
+
+		print '<script type="text/javascript">window.location.href="' . $_SERVER['HTTP_REFERER'] . '";</script>';
+
+	}else {
+		include dirname(__FILE__) . '/settings/sns_setting.php';
+	}
+}
+
+add_action('admin_menu', 'azure_sns_setting');

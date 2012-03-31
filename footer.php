@@ -86,13 +86,25 @@
 			</div><!-- #site-generator -->
 		</div><!-- #colophon -->
 	</div><!-- #footer -->
+
 	<div class="soc-fixed">
-        <a href="#" class="soc-chat" title="live chat/help" ><span>Top</span></a>
-        <a target="_blank" title="Facebook" href="https://www.facebook.com/willerce" class="soc-facebook"><span>facebook page</span></a>
-        <a target="_blank" title="Twitter" href="http://twitter.com/#!/willerce" class="soc-twitter"><span>visit twitter</span></a>
+        <a href="#" class="soc-chat" title="Top" ><span>Top</span></a>
+
+		<?php if(false != get_option('azure_sns_facebook') || '' != get_option('azure_sns_facebook')) : ?>
+			<a target="_blank" title="Facebook" href="https://www.facebook.com/<?php print get_option('azure_sns_facebook'); ?>" class="soc-facebook"><span>facebook page</span></a>
+		<?php endif; ?>
+
+		<?php if(false != get_option('azure_sns_twitter') || '' != get_option('azure_sns_twitter')) : ?>
+			<a target="_blank" title="Twitter" href="http://twitter.com/#!/<?php print get_option('azure_sns_twitter'); ?>" class="soc-twitter"><span>visit twitter</span></a>
+		<?php endif; ?>
+
         <a target="_blank" title="RSS Feed" href="http://willerce.com/feed" class="soc-rss"><span>rss feeds</span></a>
-        <a target="_blank" title="Email" href="mailto:willerce@gmail.com" class="soc-mail"><span>newsletter</span></a>
+
+		<?php if(false != get_option('azure_sns_email') || '' != get_option('azure_sns_email')) : ?>
+			<a target="_blank" title="Email" href="mailto:<?php print get_option('azure_sns_email'); ?>" class="soc-mail"><span>newsletter</span></a>
+		<?php endif; ?>
     </div>
+
 </div><!-- #wrapper -->
 <script type="text/javascript">
   var _gaq = _gaq || [];
